@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+vector<pair<int,int> > adj[30010];
+bool visit[30010];
+int ma=0,mai;
+
+
+void dfs(int u,int w)
+{
+	if(w>ma)
+	{
+		ma=w;
+		mai=u;
+	}
+	for(int i=0;i<adj[u].size();i++)
+	{
+		if(!visit[adj[u][i].first])
+		{
+			visit[adj[u][i].first]=1;
+			dfs(adj[u][i].first,w+adj[u][i].second);
+		}
+	}
+}
+
+int main()
+{
+	int t;
+	scanf("%d",&t);
+	for(int I=1;I<=t;I++)
+	{
+		int n,u,v,w;
+		scanf("%d",&n);
+		for(int i=1;i<n;i++)
+		{
+			scanf("%d %d %d",&u,&v,&w);
+			adj[u].push_back(make_pair(v,w));
+			adj[v].push_back(make_pair(u,w));
+		}
+		visit[0]=1;
+		dfs(0,0);
+		memset(visit,0,sizeof(visit));
+		visit[mai]=1;
+		dfs(mai,0);
+		printf("Case %d: %d\n",I,ma);
+		ma=0;
+		memset(visit,0,sizeof(visit));
+		for(int i=0;i<30010;i++)adj[i].clear();
+	}
+}

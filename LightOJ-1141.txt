@@ -1,0 +1,126 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define fast ios_base::sync_with_stdio(0)
+#define bfast cin.tie(0)
+#define outs(x) cout << x << " "
+#define outn(x) cout << x << "\n"
+#define sf scanf
+#define pf printf
+#define nl puts("")
+#define psb push_back
+#define mset(c,v) memset(c , v , sizeof c)
+#define loop0(n) for(int i=0; i<n; i++)
+#define loop1(n) for(int i=1; i<=n; i++)
+#define mpair(x , y) make_pair(x , y)
+#define all(x) x.begin(), x.end()
+#define pi acos(-1.0)
+#define psb push_back
+
+typedef unsigned long long ull;
+typedef long long LL;
+typedef vector<int>vii;
+typedef vector<LL>vll;
+typedef vector<string>vs;
+typedef map<int, int>mpii;
+typedef map<string, int>mpsi;
+typedef map<char, int>mpci;
+typedef map<LL, LL>mpll;
+
+const int mod = 1000007;
+const int high = 1002;
+const int QRT = 32;
+
+bool mark[high];
+int prm[(high >> 1) + 5] , plen=0 , visited[high], cost[high];
+
+void sieve()
+{
+    int i , j;
+    mset(mark, false);
+
+    for(i=3; i<QRT; i+=2)
+    {
+        if(!mark[i])
+        {
+            for(j=i*i; j<high; j+=(2 * i))
+            {
+                mark[j] = true;
+            }
+        }
+    }
+
+    prm[plen++] = 2;
+
+    for(i=3; i<high; i+=2)
+    {
+        if(!mark[i])
+        {
+            prm[plen++] = i;
+        }
+    }
+
+    //for(i=0; i<100; i++) cout << prm[i] << "; ";
+}
+
+int BFS(int S , int T)
+{
+    mset(cost , 0);
+    mset(visited , 0);
+
+    int A=0 , sum=0 , x=0;
+
+    if(S == T) return 0;
+
+    cost[S] = 0;
+    visited[S] = 1;
+
+    queue<int>Q;
+    Q.push(S);
+
+    while(!Q.empty())
+    {
+        A = Q.front();
+
+        Q.pop();
+
+        for(int i=0; i<plen && prm[i] < A; i++)
+        {
+            x = prm[i];
+
+            if(!(A % x))
+            {
+                sum = A + x;
+
+                if(sum == T) return cost[A] + 1;
+
+                if(!visited[sum] && sum <= T)
+                {
+                    visited[sum] = 1;
+                    cost[sum] = cost[A] + 1;
+                    Q.push(sum);
+                }
+            }
+        }
+    }
+
+    return -1;
+}
+
+int main()
+{
+    sieve();
+    int S , T , test, tc=0 , ans=0;
+    sf("%d", &test);
+    while(test--)
+    {
+        sf("%d %d", &S , &T);
+
+        ans = BFS(S , T);
+
+        pf("Case %d: %d\n" , ++tc , ans);
+    }
+
+    return 0;
+}
