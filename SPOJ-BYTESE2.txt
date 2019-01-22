@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[210],B[210],A[210];
+void merge(int l,int r)
+{
+    if(l<r)
+    {
+        int m=(l+r)>>1;
+        merge(l,m);
+        merge(m+1,r);
+        int na=m-l+1,nb=r-m,i,j,k;
+        for(i=0;i<na;i++)A[i]=arr[i+l];
+        for(i=0;i<nb;i++)B[i]=arr[i+m+1];
+        j=i=0;k=l;
+        while(i<na && j<nb)if(A[i]<B[j])arr[k++]=A[i++]; else arr[k++]=B[j++];
+        while(i<na)arr[k++]=A[i++];
+        while(j<nb)arr[k++]=B[j++];
+    }
+}
+
+int bin(int l,int r,int val)
+{
+	if(l>r)return -1;
+	int m=(l+r)>>1;
+	if(arr[m]==val)return m;
+	if(arr[m]>val)return bin(l,m-1,val);
+	return bin(m+1,r,val);
+}
+
+bool ok(int l,int r,int x,int y)
+{
+	return x<=l && y>=r;
+}
+
+main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n;
+		cin>>n;
+		int aa[n],bb[n];
+		for(int i=0;i<n;i++)
+		{
+			cin>>aa[i]>>bb[i];
+			arr[i*2]=aa[i];
+			arr[i*2+1]=bb[i];
+		}
+		merge(0,2*n-1);
+		int j=1;
+		A[0]=arr[0];
+		for(int i=1;i<2*n;i++)if(arr[i]!=arr[i-1])A[j++]=arr[i];
+		for(int i=0;i<j;i++)arr[i]=A[i];
+		for(int i=0;i<n;i++)aa[i]=bin(0,j-1,aa[i]),bb[i]=bin(0,j-1,bb[i]);
+		int ma=-1,k=j;
+		for(int i=1;i<k;i++)
+		{
+			int c=0;
+			for(int j=0;j<n;j++)c+=ok(i-1,i,aa[j],bb[j]);
+			ma=max(ma,c);
+		}
+		cout<<ma<<endl;
+	}
+}
+

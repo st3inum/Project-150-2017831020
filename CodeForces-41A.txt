@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+	char arr[110],brr[110];
+	bool flag=1;
+	scanf("%s %s",arr,brr);
+	for(int i=0,j=strlen(brr)-1;i<strlen(arr) && j>=0;i++,j--)
+	{
+		if(arr[i]!=brr[j])
+		{
+			flag=0;
+			break;
+		}
+	}
+	if(strlen(arr)!=strlen(brr))flag=0;
+	if(flag)printf("YES\n");
+	else printf("NO\n");
+}

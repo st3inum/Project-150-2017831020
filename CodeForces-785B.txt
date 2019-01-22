@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct nn
+{
+	int l,r;
+};
+
+int dis(nn a,nn b)
+{
+	if(a.r<b.l )return abs(a.r-b.l);
+	if(a.l>b.r)return abs(a.l-b.r);
+	return 0;
+}
+
+int arr[100010],A[100010],B[100010];
+
+
+
+int main()
+{
+	int n,m,mii=0,mai=0,nii=0,nai=0;
+	cin>>n;
+	nn arr[n];
+	for(int i=0;i<n;i++)
+	{
+		cin>>arr[i].l>>arr[i].r;
+		if(arr[i].l>arr[mai].l)mai=i;
+		if(arr[i].r<arr[mii].l)mii=i;
+	}
+	cin>>m;
+	nn brr[m];
+	for(int i=0;i<m;i++)
+	{
+		cin>>brr[i].l>>brr[i].r;
+		if(brr[i].l>brr[nai].l)nai=i;
+		if(brr[i].r<brr[nii].l)nii=i;
+	}
+	int d=0;
+	for(int i=0;i<n;i++)d=max(d,dis(arr[i],brr[nai]));
+		for(int i=0;i<n;i++)d=max(d,dis(arr[i],brr[nii]));
+	for(int i=0;i<m;i++)d=max(d,dis(brr[i],arr[mai]));
+		for(int i=0;i<m;i++)d=max(d,dis(brr[i],arr[mii]));
+	cout<<d<<endl;
+}

@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+int arr[100010],A[100010],B[100010];
+int n;
+void merge(int l,int r)
+{
+    if(l<r)
+    {
+        int m=(l+r)>>1;
+        merge(l,m);
+        merge(m+1,r);
+        int na=m-l+1,nb=r-m,i,j,k;
+        for(i=0;i<na;i++)A[i]=arr[i+l];
+        for(i=0;i<nb;i++)B[i]=arr[i+m+1];
+        j=i=0;k=l;
+        while(i<na && j<nb)if(A[i]<B[j])arr[k++]=A[i++]; else arr[k++]=B[j++];
+        while(i<na)arr[k++]=A[i++];
+        while(j<nb)arr[k++]=B[j++];
+    }
+}
+
+bool f()
+{
+	for(int i=0;i+2<n;i++)if(arr[i]+arr[i+1]>arr[i+2])return 1;
+		return 0;
+}
+
+int main()
+{
+	cin>>n;
+	for(int i=0;i<n;i++)cin>>arr[i];
+		merge(0,n-1);
+	if(f())printf("YES\n");
+	else printf("NO\n");
+}
